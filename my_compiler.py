@@ -1,9 +1,29 @@
 import compiler
 from compiler.ast import *
-
 ast = compiler.parseFile("input_file")
 
 name = "flat_expr_";
+
+def x86(flat):
+	envmap = []
+	commandmap = []
+	n = 0
+	print("pushl %ebp")
+	print("movl %esp, %ebp")
+	with open(flat) as f:
+		filed = f.readlines()
+	for s in filed:
+		if s.find('flat_expr') != -1:
+			n += 1
+			envmap.append(('flatexpr_(%d)' % n))
+			commandmap.append(s)
+			#print('flatexpr_(%d)' % n)
+	for z in commandmap:
+	print("subl $%d, %%esp" %(n*4))
+	print("movl $0, %eax")
+	print("leave")
+	print("ret")
+	return 0
 
 def spit_flat_expr(n, count):
     if isinstance(n, Module):
